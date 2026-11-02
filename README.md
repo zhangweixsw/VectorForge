@@ -1,11 +1,15 @@
-# VectorForge v18 Illustrator Monitor
+# VectorForge v18.0.1 Illustrator Monitor
 
 中文 Windows x64 便携工具，递归监控多个目录，每个 AI 对应一个同目录 PDF 或 JPG。
 PDF 包含全部画板；JPG 导出第一个画板。需要安装并可正常运行 Adobe Illustrator。
 
+[软件详情与免费下载](https://mootop.top/software/vectorforge/) · [使用指南](https://mootop.top/docs/vectorforge/) · [开发手记](https://mootop.top/vectorforge-v18-0-1-development-story/) · [GitHub Release](https://github.com/zhangweixsw/VectorForge/releases/tag/v18.0.1)
+
+v18.0.1 增加 MooTop 署名和签名更新校验。点击窗口底部“检查更新”，确认后下载并验证安装包；更新失败保留当前版本。
+
 ## 开始使用
 
-1. 推荐运行 `dist/win-x64-v18-installer/VectorForge-Setup-v18.exe` 安装；便携版位于 `dist/win-x64-v18/VectorForge.exe`。v17 保留供回退。
+1. 推荐运行 `dist/win-x64-v18.0.1-installer/VectorForge-Setup-v18.0.1.exe` 安装；便携版位于 `dist/win-x64-v18.0.1/VectorForge.exe`。旧版保留供回退。
 2. 安装或升级前，从系统托盘完全退出正在运行的旧版 VectorForge。
 3. 为 PDF、JPG 分别添加路径并勾选任务。路径可以重叠。
 4. 自行填写最后修改时间范围（小时），再设置扫描间隔（默认 120 秒）、超时、JPG DPI 和质量。

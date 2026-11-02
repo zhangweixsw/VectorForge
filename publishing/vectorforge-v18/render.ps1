@@ -13,7 +13,7 @@ body:has(.mootop-vectorforge) .wp-post-image{object-fit:contain!important;max-he
 foreach($name in @('product','guide','story')){
     $md=Get-Content -LiteralPath (Join-Path $PSScriptRoot "$name.md") -Raw
     $html=(ConvertFrom-Markdown -InputObject $md).Html
-    $html=$html -replace '(?s)^<h1>.*?</h1>',''
+    $html=$html -replace '(?s)^<h1\b[^>]*>.*?</h1>',''
     if($name -eq 'product'){
         $download='<div class="vf-download"><a href="'+$base+'/VectorForge-v18.0.1-Windows-x64-Installer.zip">免费下载 Windows 安装版</a><a href="'+$base+'/VectorForge-v18.0.1-Windows-x64-Portable.zip">下载便携版</a></div>'
         $visuals='<figure><img class="vf-ui" src="'+$base+'/vectorforge-v18.0.1-ui.png" alt="VectorForge v18.0.1 真实软件界面，包含 PDF 与 JPG 多路径任务、小时范围、像素宽度及检查更新按钮"/><figcaption>真实界面：PDF 与 JPG 分别设置路径，图片可选择 DPI 或按宽度等比导出。</figcaption></figure><figure><img src="'+$base+'/vectorforge-v18.0.1-flow.png" alt="监控目录、检查源变化和稳定性、导出工作副本的三步流程示意"/><figcaption>流程示意：稳定后检查变化，未变跳过；PDF 包含全部画板，JPG 导出第一画板。</figcaption></figure>'

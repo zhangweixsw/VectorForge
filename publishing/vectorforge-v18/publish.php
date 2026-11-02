@@ -32,7 +32,7 @@ foreach($definitions as $d){
 }
 $content=get_post_field('post_content',$software->ID);
 if(strpos($content,'data-mootop-product="vectorforge"')===false){
- file_put_contents("$root/software-before.html",$content);
+ if(file_put_contents("$root/software-before.html",$content)===false)throw new Exception('Could not back up software overview');
  $start=strpos($content,'id="illustrator-tools"');if($start===false)throw new Exception('Missing illustrator section');
  $grid=strpos($content,'<div class="mootop-software-grid">',$start);if($grid===false)throw new Exception('Missing grid');
  $pos=$grid+strlen('<div class="mootop-software-grid">');

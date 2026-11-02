@@ -1,6 +1,8 @@
 using VectorForge;
 using VectorForge.Services;
 
+if (args.Contains("--update-smoke")) return UpdateSmoke.Run();
+
 if (args.Length >= 3 && args[0] == "--width-smoke") return WidthSmoke.Run(args[1], args[2]);
 
 if (args.Length >= 3 && args[0] == "--illustrator-smoke")
