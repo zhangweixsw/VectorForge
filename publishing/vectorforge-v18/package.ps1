@@ -16,6 +16,7 @@ foreach($type in @('Installer','Portable')) {
     Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'story.md') -Destination (Join-Path $directory '开发手记.md')
     $runtime = Get-ChildItem (Join-Path $env:USERPROFILE '.nuget/packages/microsoft.netcore.app.runtime.win-x64') -Recurse -Filter 'THIRD-PARTY-NOTICES.TXT' | Select-Object -First 1
     if($runtime) { Copy-Item -LiteralPath $runtime.FullName -Destination (Join-Path $directory 'THIRD-PARTY-NOTICES.txt') }
+    if($runtime) { Copy-Item -LiteralPath (Join-Path $runtime.DirectoryName 'LICENSE.TXT') -Destination (Join-Path $directory 'DOTNET-LICENSE.txt') }
     $zip = Join-Path $out $names[$type]
     if(Test-Path -LiteralPath $zip){throw "Versioned ZIP already exists: $zip"}
     Compress-Archive -Path (Join-Path $directory '*') -DestinationPath $zip -CompressionLevel Optimal
