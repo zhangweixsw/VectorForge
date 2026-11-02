@@ -1,0 +1,5 @@
+*.ai -text
+*.png -text
+*.ico -text
+*.sh text eol=lf
+*.pem text eol=lf

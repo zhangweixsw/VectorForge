@@ -1,0 +1,218 @@
+<Window x:Class="VectorForge.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="VectorForge v18.0.1 Illustrator Monitor" Height="900" Width="1080" Icon="Assets/VectorForge.ico"
+        MinHeight="680" MinWidth="820" Background="#F4F6FA"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="Padding" Value="18" />
+            <Setter Property="Margin" Value="0,0,0,14" />
+            <Setter Property="BorderBrush" Value="#DDE3EC" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+        <Style x:Key="LabelStyle" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="#344054" />
+            <Setter Property="Margin" Value="4" />
+        </Style>
+    </Window.Resources>
+
+    <Grid Background="#F4F6FA">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="#172554" Padding="24,18">
+            <DockPanel>
+                <Image Source="Assets/VectorForge.ico" Width="48" Height="48" Margin="0,0,12,0" DockPanel.Dock="Left" />
+                <StackPanel DockPanel.Dock="Left">
+                    <TextBlock Text="VectorForge" FontSize="26" FontWeight="Bold" Foreground="White" />
+                    <TextBlock Text="Illustrator 自动监控与导出" Foreground="#BFDBFE" Margin="0,3,0,0" />
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <CheckBox x:Name="StartupCheckBox" Content="开机自动启动" Foreground="White" VerticalAlignment="Center" Margin="8" />
+                    <Button x:Name="StartButton" Content="开始监控" Click="StartButton_Click" Background="#DBEAFE" />
+                    <Button x:Name="PauseButton" Content="暂停" Click="PauseButton_Click" />
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="22">
+                <Border Style="{StaticResource Card}" Background="#EFF6FF" BorderBrush="#BFDBFE">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource LabelStyle}" Text="Illustrator 工作模式" />
+                            <ComboBox x:Name="SessionModeComboBox" Width="255" MinHeight="30" Margin="8,0" ToolTip="暂停监控后可切换工作模式">
+                                <ComboBoxItem Content="无人值守：卡住自动重启" />
+                                <ComboBoxItem Content="始终导出：有人操作也继续（默认）" />
+                            </ComboBox>
+                        </StackPanel>
+                        <TextBlock Margin="4,8,4,0" TextWrapping="Wrap" Foreground="#344054"
+                                   Text="默认始终导出：已有 Illustrator 或有人操作时也继续处理，不等待空闲。只导出磁盘上已保存的工作副本；用户实例卡死时不会强制关闭。隐藏文件及隐藏目录跳过。无人值守模式仅供专用电脑使用。" />
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <DockPanel Margin="0,0,0,12">
+                            <CheckBox x:Name="PdfEnabledCheckBox" Content="启用 PDF 监控" FontSize="18" FontWeight="SemiBold" Foreground="#172554" />
+                            <TextBlock x:Name="PdfStateText" DockPanel.Dock="Right" Text="已暂停" Margin="16,0,0,0" Foreground="#667085" FontWeight="SemiBold" />
+                        </DockPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="125" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource LabelStyle}" Text="监控文件夹（可多个）" />
+                            <ListBox Grid.Row="0" Grid.Column="1" x:Name="PdfPathsListBox" MinHeight="74" Margin="4" />
+                            <StackPanel Grid.Row="0" Grid.Column="2" VerticalAlignment="Center">
+                                <Button Content="添加路径…" Click="AddPdfPath_Click" />
+                                <Button Content="删除选中" Click="RemovePdfPath_Click" />
+                            </StackPanel>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource LabelStyle}" Text="修改时间范围（小时）" />
+                            <StackPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal">
+                                <TextBox x:Name="PdfHoursTextBox" Width="90" ToolTip="填写 1–87600 小时，例如 24 表示最近 24 小时" />
+                                <TextBlock Style="{StaticResource LabelStyle}" Text="扫描间隔（秒）" />
+                                <TextBox x:Name="PdfIntervalTextBox" Width="70" />
+                                <TextBlock Style="{StaticResource LabelStyle}" Text="单文件超时（分钟）" />
+                                <TextBox x:Name="PdfTimeoutTextBox" Width="70" />
+                            </StackPanel>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource LabelStyle}" Text="PDF 导出预设" />
+                            <StackPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="4">
+                                <ComboBox x:Name="PdfPresetComboBox" Width="360" MinHeight="30" ToolTip="选择本机 Illustrator 中已安装的 PDF 预设">
+                                    <ComboBoxItem Content="自动：最小文件大小" Tag="" IsSelected="True" />
+                                </ComboBox>
+                                <Button x:Name="ReadPdfPresetsButton" Content="读取预设" Click="ReadPdfPresets_Click" />
+                            </StackPanel>
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource LabelStyle}" Text="跳过文件名关键词" />
+                            <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" x:Name="PdfSkipKeywordsTextBox"
+                                     Margin="4" ToolTip="多个关键词可用中文/英文分号、逗号或换行分隔，例如：转曲打样；不用导出" />
+
+                            <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource LabelStyle}" Text="运行状态" />
+                            <TextBlock Grid.Row="4" Grid.Column="1" x:Name="PdfResultText" Margin="8" TextWrapping="Wrap" Text="尚未扫描" />
+                            <StackPanel Grid.Row="4" Grid.Column="2">
+                                <Button Content="立即扫描" Click="RunPdfNow_Click" />
+                                <Button Content="停止 PDF 任务" Tag="Pdf" Click="StopJob_Click" />
+                                <Button Content="重试失败项 / 恢复" Tag="Pdf" Click="Retry_Click" />
+                                <Button Content="强制覆盖导出全部 PDF…" Tag="Pdf" Click="Reexport_Click" />
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <DockPanel Margin="0,0,0,12">
+                            <CheckBox x:Name="JpgEnabledCheckBox" Content="启用 JPG 监控" FontSize="18" FontWeight="SemiBold" Foreground="#172554" />
+                            <TextBlock x:Name="JpgStateText" DockPanel.Dock="Right" Text="已暂停" Margin="16,0,0,0" Foreground="#667085" FontWeight="SemiBold" />
+                        </DockPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="125" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource LabelStyle}" Text="监控文件夹（可多个）" />
+                            <ListBox Grid.Row="0" Grid.Column="1" x:Name="JpgPathsListBox" MinHeight="74" Margin="4" />
+                            <StackPanel Grid.Row="0" Grid.Column="2" VerticalAlignment="Center">
+                                <Button Content="添加路径…" Click="AddJpgPath_Click" />
+                                <Button Content="删除选中" Click="RemoveJpgPath_Click" />
+                            </StackPanel>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource LabelStyle}" Text="修改时间范围（小时）" />
+                            <StackPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal">
+                                <TextBox x:Name="JpgHoursTextBox" Width="90" ToolTip="填写 1–87600 小时，例如 24 表示最近 24 小时" />
+                                <TextBlock Style="{StaticResource LabelStyle}" Text="扫描间隔（秒）" />
+                                <TextBox x:Name="JpgIntervalTextBox" Width="70" />
+                                <TextBlock Style="{StaticResource LabelStyle}" Text="单文件超时（分钟）" />
+                                <TextBox x:Name="JpgTimeoutTextBox" Width="70" />
+                            </StackPanel>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource LabelStyle}" Text="图片参数" />
+                            <WrapPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
+                                <ComboBox x:Name="JpgSizingComboBox" Width="130" Margin="4" MinHeight="28">
+                                    <ComboBoxItem Content="按 DPI 导出" />
+                                    <ComboBoxItem Content="按宽度等比导出" />
+                                </ComboBox>
+                                <TextBlock Style="{StaticResource LabelStyle}" Text="DPI" />
+                                <TextBox x:Name="JpgDpiTextBox" Width="60" />
+                                <TextBlock Style="{StaticResource LabelStyle}" Text="宽度 px" />
+                                <TextBox x:Name="JpgPixelWidthTextBox" Width="75" ToolTip="1–30000 像素，高度等比计算，仍按第一画板边界导出。参数变更不会自动覆盖已有最新图片；需要时点击强制覆盖导出。" />
+                                <TextBlock Style="{StaticResource LabelStyle}" Text="质量（0–100）" />
+                                <TextBox x:Name="JpgQualityTextBox" Width="70" ToolTip="DPI模式：0–100；按宽度模式：匹配最近的 Adobe JPG 质量档位20/50/80/100" />
+                            </WrapPanel>
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource LabelStyle}" Text="跳过文件名关键词" />
+                            <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" x:Name="JpgSkipKeywordsTextBox"
+                                     Margin="4" ToolTip="多个关键词可用中文/英文分号、逗号或换行分隔，例如：转曲打样；不用导出" />
+
+                            <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource LabelStyle}" Text="运行状态" />
+                            <TextBlock Grid.Row="4" Grid.Column="1" x:Name="JpgResultText" Margin="8" TextWrapping="Wrap" Text="尚未扫描" />
+                            <StackPanel Grid.Row="4" Grid.Column="2">
+                                <Button Content="立即扫描" Click="RunJpgNow_Click" />
+                                <Button Content="停止 JPG 任务" Tag="Jpg" Click="StopJob_Click" />
+                                <Button Content="重试失败项 / 恢复" Tag="Jpg" Click="Retry_Click" />
+                                <Button Content="强制覆盖导出全部 JPG…" Tag="Jpg" Click="Reexport_Click" />
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource Card}" Background="#EFF6FF" BorderBrush="#BFDBFE">
+                    <StackPanel>
+                        <TextBlock Text="安全说明" FontWeight="SemiBold" Foreground="#1E3A8A" Margin="0,0,0,6" />
+                        <TextBlock Text="只读取已保存的 AI，使用工作副本导出。源文件未变则跳过；PDF/JPG 自动替换及清理。原始 AI 永远不会被软件保存或删除。共享模式异常后，恢复 Illustrator 再点击重试失败项；无人值守模式自动恢复专用会话。" TextWrapping="Wrap" Foreground="#344054" />
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="最近处理记录（最多 1000 条）" FontWeight="SemiBold" />
+                        <TextBox x:Name="RecordFilter" TextChanged="Filter_Changed" ToolTip="输入文件名、原因或类型筛选" />
+                        <DataGrid x:Name="RecordsGrid" Height="240" IsReadOnly="True" AutoGenerateColumns="False" EnableRowVirtualization="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="时间" Binding="{Binding Time, StringFormat=HH:mm:ss}" Width="85" />
+                                <DataGridTextColumn Header="类型" Binding="{Binding Kind}" Width="55" />
+                                <DataGridTextColumn Header="处理原因" Binding="{Binding Reason}" Width="240" />
+                                <DataGridTextColumn Header="文件" Binding="{Binding Path}" Width="*" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Border Grid.Row="2" Background="White" BorderBrush="#DDE3EC" BorderThickness="0,1,0,0" Padding="18,10">
+            <Grid>
+                <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                <TextBlock x:Name="GlobalStatusText" Text="准备就绪" Foreground="#475467" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button x:Name="UpdateButton" Content="检查更新" Click="CheckUpdate_Click" />
+                    <TextBlock VerticalAlignment="Center" Margin="12,0,0,0"><Hyperlink NavigateUri="https://mootop.top/software/vectorforge/" RequestNavigate="Website_RequestNavigate">mootop.top</Hyperlink></TextBlock>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

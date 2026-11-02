@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <PlatformTarget>x64</PlatformTarget>
+    <AssemblyName>VectorForge</AssemblyName>
+    <RootNamespace>VectorForge</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets/VectorForge.ico</ApplicationIcon>
+    <Version>18.0.1</Version>
+    <Company>MooTop</Company>
+    <Authors>MooTop</Authors>
+    <Product>VectorForge</Product>
+    <Copyright>Copyright 2026 MooTop · https://mootop.top/</Copyright>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>false</SelfContained>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets/UpdatePublicKey.pem" LogicalName="VectorForge.UpdatePublicKey.pem" />
+    <Resource Include="Assets/VectorForge.ico" />
+    <EmbeddedResource Include="Assets/VectorForge.ico" LogicalName="VectorForge.Assets.VectorForge.ico" />
+  </ItemGroup>
+</Project>

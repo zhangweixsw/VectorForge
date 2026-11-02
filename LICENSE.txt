@@ -1,0 +1,12 @@
+Copyright (c) 2026 MooTop. All rights reserved.
+
+The official unmodified VectorForge executable packages may be used free of charge
+for personal and commercial work. Adobe Illustrator is required and is licensed
+separately by Adobe. No Adobe software is included.
+
+Source code is made available for inspection. No general license to modify,
+redistribute modified builds, or use MooTop trademarks is granted by this notice.
+Contact https://mootop.top/support/ for other permissions.
+
+The software is provided as-is, without warranty. Keep independent backups of
+important files. Third-party runtime components retain their respective licenses.

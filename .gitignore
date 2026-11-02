@@ -1,0 +1,11 @@
+bin/
+obj/
+dist/
+*.user
+*.suo
+.vs/
+artifacts/
+publishing/vectorforge-v18/PUBLISH-STATUS.md
+publishing/vectorforge-v18/site-backup/
+publishing/vectorforge-v18/staging/
+publishing/vectorforge-v18/transfer/
